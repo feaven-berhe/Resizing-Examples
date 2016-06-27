@@ -1,0 +1,89 @@
+<html>
+   <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+   <head>
+
+     <meta charset="utf-8">
+     <title> preserveAspectRatio and viewBox</title>
+
+
+     <style>
+
+
+    
+     body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+ </style>
+     
+   </head>
+
+   <body>
+     
+     <script>
+       
+     var width = 950,
+     height = 500,
+     radius = 500,
+     donut = d3.layout.pie().sort(null),
+    arc = [];
+    var c = 0;
+    for(var j=1;j<=2;j++){
+      for(var k=0;k<6;k++){
+        arc[c] = d3.svg.arc()
+            .innerRadius((j*r)/6)
+            .outerRadius(((j+1)*r)/6)
+            .startAngle((2*k/3)-2)
+            .endAngle((2*k/3)-(4/3));
+        c++;  
+      }  
+    }; 
+    
+// Positoning the arc & giving each arc an attribute e.g. colour / stroke
+var svg = d3.select("#chart").append("svg") 
+    .attr("viewBox", "0 0 700 500")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("transform", "translate(" + r + "," + r +") rotate(180) scale(-1, -1)");
+
+var arcs = svg.selectAll("path");
+
+var colours = ['#909090','#A8A8A8','#B8B8B8','#D0D0D0','#E8E8E8'];
+
+for (var z=0; z<30; z++){
+  arcs
+      .data(donut([null]))
+    .enter().append("g")
+      .attr("class", "arc")
+    .append("path")
+      .attr("fill", function(d, i) { return colours[(Math.floor(z/6))]; })
+      .attr("d", arc[z])
+      .attr("stroke","black");
+}
+
+		    </script>
+     
+		
+     <div id='chart'></div>
+     
+		    
+   </body>
+</html>
+
+		   
